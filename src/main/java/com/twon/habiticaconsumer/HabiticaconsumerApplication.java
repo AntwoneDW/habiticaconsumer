@@ -87,6 +87,7 @@ public class HabiticaconsumerApplication  implements ApplicationRunner {
             logger.info("-----------------------------" );
             logger.info("* habitDataObj.getText(): " +  habitDataObj.getText() );
             logger.info("* habitDataObj.get_id(): " + habitDataObj.get_id() + " = " + habitDataObj.getId() );
+            logger.info("* habitDataObj() History Size: " +  habitDataObj.getHistory().size() );
             if(!habitDataObj.getNotes().isEmpty())
             {
                 logger.info("* habitDataObj.getNotes(): " +  habitDataObj.getNotes() );

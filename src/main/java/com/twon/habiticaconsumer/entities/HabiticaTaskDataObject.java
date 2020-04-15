@@ -4,6 +4,9 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.Map;
+
 @Component
 public class HabiticaTaskDataObject {
     @Getter @Setter private String id;
@@ -15,4 +18,15 @@ public class HabiticaTaskDataObject {
     @Getter @Setter private Boolean isDue;
     @Getter @Setter private Boolean completed;
     @Getter @Setter private String text;
+    @Getter @Setter private ArrayList<Map<String,Float>> history = new ArrayList<>();
+    /*
+      "history": [
+        {
+          "date": 1580665364818,
+          "value": 1
+        },
+     */
+    /*
+    value
+    */
 }
