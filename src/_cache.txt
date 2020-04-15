@@ -1,0 +1,12 @@
+
+Habits:
+To Check
+POST: https://habitica.com/api/v4/tasks/2a7a50d4-f031-4afc-89f1-edcf17371bf6/score/up
+To UnCheck
+POST: https://habitica.com/api/v4/tasks/2a7a50d4-f031-4afc-89f1-edcf17371bf6/score/down
+
+daily:
+To Check
+POST: Same
+To UnCheck
+POST: Same

@@ -5,6 +5,7 @@ import com.google.gson.internal.LinkedTreeMap;
 import com.twon.habiticaconsumer.entities.HabiticaTaskResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
@@ -21,6 +22,11 @@ import java.util.Map;
 @SpringBootApplication
 public class HabiticaconsumerApplication  implements ApplicationRunner {
 
+    @Autowired
+    private HabiticaAccess habiticaAccess;
+    @Autowired
+    private HabiticaTaskResponse habitResponse;
+
     private static final Logger logger = LoggerFactory.getLogger(HabiticaconsumerApplication.class);
 
     public static void main(String[] args) {
@@ -29,15 +35,15 @@ public class HabiticaconsumerApplication  implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
+        logger.debug("habiticaAccess: " + habiticaAccess.userkey + " / " + habiticaAccess.secretkey );
         WebClient webClient = WebClient.create("https://habitica.com/api/v3/tasks/user");
         Mono<String> result = webClient.get()
                 .uri("")
-                .header("x-api-user", "7c649a5e-ec9a-4727-bc07-e48666a413cd")
-                .header("x-api-key","5a5be917-5755-45e8-ae12-d2d9c146cdcc")
-                .header("x-client","5a5be917-5755-45e8-ae12-d2d9c146cdcc")
+                .header("x-api-user", habiticaAccess.userkey)
+                .header("x-api-key",habiticaAccess.secretkey)
+                .header("x-client",habiticaAccess.secretkey)
                 .retrieve().bodyToMono(String.class);
-
-        result.subscribe(HabiticaconsumerApplication::handleResponse);
+        result.subscribe(this::handleResponse);
         logger.info("After subscribe");
         //System.out.println();
         //wait for a while for the response
@@ -47,7 +53,7 @@ public class HabiticaconsumerApplication  implements ApplicationRunner {
         //System.out.println(response);
     }
 
-    private static void handleResponse(String s) {
+    private void handleResponse(String s) {
         logger.info("handle response");
         logger.info(s);
         Gson gson = new Gson();
@@ -59,6 +65,7 @@ public class HabiticaconsumerApplication  implements ApplicationRunner {
             }
         );
         ArrayList<Object> dataList = (ArrayList)habiticaTaskResponseMap.get("data");
+        logger.info("* dataList.toString()" + dataList.toString() );
         logger.info("* data[0]: is a " + dataList.get(0).getClass().getSimpleName() );
         dataList.forEach( dataObj -> {
             LinkedTreeMap dataObjTreeMap = (LinkedTreeMap)dataObj;
@@ -70,7 +77,7 @@ public class HabiticaconsumerApplication  implements ApplicationRunner {
                 }
             );
         });
-        HabiticaTaskResponse habitResponse = gson.fromJson(s, HabiticaTaskResponse.class);
+        habitResponse = gson.fromJson(s, HabiticaTaskResponse.class);
         logger.info("* habitResponse getAppVersion: " +  habitResponse.getAppVersion() );
         logger.info("* habitResponse getData: " +  habitResponse.getData().size() );
         logger.info("* habitResponse getSuccess: " +  habitResponse.getSuccess() );
@@ -79,6 +86,7 @@ public class HabiticaconsumerApplication  implements ApplicationRunner {
         {
             logger.info("-----------------------------" );
             logger.info("* habitDataObj.getText(): " +  habitDataObj.getText() );
+            logger.info("* habitDataObj.get_id(): " + habitDataObj.get_id() + " = " + habitDataObj.getId() );
             if(!habitDataObj.getNotes().isEmpty())
             {
                 logger.info("* habitDataObj.getNotes(): " +  habitDataObj.getNotes() );
@@ -87,5 +95,6 @@ public class HabiticaconsumerApplication  implements ApplicationRunner {
         }
         );
     }
-
+    // ./mvnw spring-boot:run
+    // ./mvnw compile
 }

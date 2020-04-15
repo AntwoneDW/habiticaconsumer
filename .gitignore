@@ -1,3 +1,8 @@
+### Passwords ###
+/src/main/resources/application.properties
+**/application.properties
+application.properties
+
 HELP.md
 target/
 !.mvn/wrapper/maven-wrapper.jar
@@ -26,6 +31,7 @@ target/
 /nbdist/
 /.nb-gradle/
 build/
+
 
 ### VS Code ###
 .vscode/
