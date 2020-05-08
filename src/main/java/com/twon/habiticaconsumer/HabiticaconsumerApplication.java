@@ -77,12 +77,17 @@ public class HabiticaconsumerApplication  implements ApplicationRunner {
                 }
             );
         });
-        habitResponse = gson.fromJson(s, HabiticaTaskResponse.class);
-        logger.info("* habitResponse getAppVersion: " +  habitResponse.getAppVersion() );
-        logger.info("* habitResponse getData: " +  habitResponse.getData().size() );
-        logger.info("* habitResponse getSuccess: " +  habitResponse.getSuccess() );
-        logger.info("* habitResponse getNotifications: " +  habitResponse.getNotifications().size() );
-        habitResponse.getData().forEach( habitDataObj ->
+        HabiticaTaskResponse habitResponse2 = gson.fromJson(s, HabiticaTaskResponse.class);
+        logger.info("* habitResponse getAppVersion: " +  habitResponse2.getAppVersion() );
+        logger.info("* habitResponse getData: " +  habitResponse2.getData().size() );
+        logger.info("* habitResponse getSuccess: " +  habitResponse2.getSuccess() );
+        logger.info("* habitResponse getNotifications: " +  habitResponse2.getNotifications().size() );
+        habitResponse.setAppVersion(habitResponse2.getAppVersion());
+        habitResponse.setData(habitResponse2.getData());
+        habitResponse.setNotifications(habitResponse2.getNotifications());
+        habitResponse.setSuccess(habitResponse2.getSuccess());
+
+        /*habitResponse.getData().forEach( habitDataObj ->
         {
             logger.info("-----------------------------" );
             logger.info("* habitDataObj.getText(): " +  habitDataObj.getText() );
@@ -94,7 +99,7 @@ public class HabiticaconsumerApplication  implements ApplicationRunner {
             }
             logger.info("* habitDataObj.getCompleted(): " +  habitDataObj.getCompleted() );
         }
-        );
+        );*/
     }
     // ./mvnw spring-boot:run
     // ./mvnw compile
